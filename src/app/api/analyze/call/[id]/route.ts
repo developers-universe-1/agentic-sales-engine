@@ -1,23 +1,19 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { mockCalls } from '@/lib/demo'
+import { analyzeSingleCall } from '@/lib/agent/analyzer'
 import { logger } from '@/lib/logger'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
-    const call = mockCalls.find(c => c.id === id) || null
+    const call = await analyzeSingleCall(id)
 
-    if (!call) {
-      return NextResponse.json({ error: 'Call not found' }, { status: 404 })
-    }
-
-    logger.info('api', 'Call detail served', { callId: id })
+    logger.info('api', 'Call analysis served', { callId: id, sentiment: call.sentiment, stage: call.stage })
     return NextResponse.json(call)
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error'
-    logger.error('api', 'Call detail failed', { error: message })
+    const message = err instanceof Error ? err.message : 'Analysis failed'
+    logger.error('api', 'Call analysis failed', { error: message })
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }

@@ -122,8 +122,8 @@ docker run -p 3000:3000 mcp-sales-agent
 ## Roadmap (Next Contributions)
 
 - [ ] Full MCP stdio transport with `resources/list` and `prompts/list`
-- [ ] Real LLM wiring in `analyzer.ts` (currently simulated)
-- [ ] Webhook ingest endpoints for Gong / Fathom / Fireflies
+- [x] Real LLM wiring in `analyzer.ts` (GPT-4o with Zod validation, demo fallback)
+- [x] Webhook ingest endpoints for Gong / Fathom / Fireflies
 - [ ] OAuth callback handlers for Salesforce, HubSpot, Gmail
 - [ ] Hermes Agent auto-skill generation from repo commits
 - [ ] CalendarFuel native integration workflow

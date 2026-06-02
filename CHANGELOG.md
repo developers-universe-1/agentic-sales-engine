@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] — 2026-06-02
+
+### Added
+- **Real LLM wiring** — `src/lib/llm/client.ts` uses GPT-4o with structured JSON output
+- `src/lib/llm/schemas.ts` — Zod schemas for call analysis, rep scoring, follow-ups, benchmarks
+- `src/lib/llm/prompts.ts` — Structured prompts with system + user messages
+- `analyzeSingleCall()`, `draftFollowUp()`, `scoreRep()`, `getBenchmarks()` — LLM-powered with demo fallback
+- **Webhook ingest endpoints** — `src/app/api/webhooks/gong/`, `fathom/`, `fireflies/`
+- `src/app/api/webhooks/verify.ts` — Shared webhook secret verification
+- Webhook secrets in `.env.example` (`GONG_WEBHOOK_SECRET`, `FATHOM_WEBHOOK_SECRET`, `FIREFLIES_WEBHOOK_SECRET`)
+
+### Changed
+- `src/lib/agent/analyzer.ts` — Now attempts real LLM analysis when `OPENAI_API_KEY` is set
+- `src/app/api/analyze/call/[id]/route.ts` — Returns LLM-enriched analysis
+- `src/app/api/followups/draft/route.ts` — Uses LLM when configured
+- `src/app/api/benchmarks/route.ts` — Uses LLM when configured
+- `README.md` — Roadmap items checked off
+- `AGENTS.md` — Updated architecture and roadmap
+
 ## [1.1.0] — 2026-06-02
 
 ### Added

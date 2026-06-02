@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { mockFollowUps, mockCalls } from '@/lib/demo'
+import { draftFollowUp } from '@/lib/agent/analyzer'
 import { logger } from '@/lib/logger'
 
 export async function POST(req: NextRequest) {
@@ -9,23 +9,15 @@ export async function POST(req: NextRequest) {
     const body = (await req.json()) as { callId: string; tone?: 'professional' | 'friendly' | 'urgent' }
     const { callId, tone = 'professional' } = body
 
-    const call = mockCalls.find(c => c.id === callId)
-    const followUp = mockFollowUps.find(f => f.dealId === callId)
+    const result = await draftFollowUp(callId, tone)
 
-    if (!call) {
-      return NextResponse.json({ error: 'Call not found' }, { status: 404 })
-    }
-
-    const result = {
+    logger.info('api', 'Follow-up drafted', { callId, tone, subject: result.subject })
+    return NextResponse.json({
       call_id: callId,
-      subject: followUp?.subject ?? `Following up — ${call.title}`,
-      body: followUp?.body ?? `Hi,\n\nThanks for the time on ${call.title}. Looking forward to next steps.\n\nBest,`,
+      ...result,
       tone,
       generated_at: new Date().toISOString(),
-    }
-
-    logger.info('api', 'Follow-up drafted', { callId, tone })
-    return NextResponse.json(result)
+    })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'
     logger.error('api', 'Follow-up draft failed', { error: message })

@@ -228,8 +228,8 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to add tools, run tests, and su
 
 - [ ] Full MCP stdio transport server implementation
 - [ ] MCP `tools/list`, `resources/list`, `prompts/list` capability endpoints
-- [ ] Real LLM call wiring in `analyzer.ts` (currently simulated for zero-config demo)
-- [ ] Webhook ingest endpoints for Gong / Fathom / Fireflies
+- [x] Real LLM call wiring in `analyzer.ts` (GPT-4o with Zod validation, falls back to demo mode)
+- [x] Webhook ingest endpoints for Gong / Fathom / Fireflies
 - [ ] OAuth callback handlers for Salesforce, HubSpot, Gmail
 
 ## License

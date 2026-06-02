@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { mockBenchmarks } from '@/lib/demo'
+import { getBenchmarks } from '@/lib/agent/analyzer'
 import { logger } from '@/lib/logger'
 
 export async function GET(req: NextRequest) {
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url)
     const segment = searchParams.get('segment') ?? 'SaaS — Mid-Market'
 
-    const benchmark = mockBenchmarks.find(b => b.segment === segment) ?? mockBenchmarks[0]
+    const benchmark = await getBenchmarks(segment)
 
     logger.info('api', 'Benchmarks served', { segment })
     return NextResponse.json(benchmark)
