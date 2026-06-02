@@ -1,18 +1,19 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
 import { logger } from '@/lib/logger'
 import { verifyWebhookSecret, getWebhookSecret } from '../verify'
 import { analysisCache } from '@/lib/cache'
 
-// ------------------------------------------------------------------
-// Gong Webhook Ingest
-//
-// Receives call recording completion events from Gong.
-// Expected payload: { callId, title, duration, transcript, participants }
-//
-// Demo mode: accepts any payload and stores in cache for analysis.
-// ------------------------------------------------------------------
+const GongWebhookSchema = z.object({
+  callId: z.string().min(1),
+  title: z.string().optional(),
+  duration: z.number().optional(),
+  transcript: z.string().optional(),
+  participants: z.array(z.string()).optional(),
+  recordingUrl: z.string().url().optional(),
+})
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,29 +22,35 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = (await req.json()) as {
-      callId: string
-      title?: string
-      duration?: number
-      transcript?: string
-      participants?: string[]
-      recordingUrl?: string
+    const body = await req.json()
+    const validated = GongWebhookSchema.safeParse(body)
+    if (!validated.success) {
+      return NextResponse.json(
+        { error: 'Invalid payload', details: validated.error.flatten() },
+        { status: 400 }
+      )
     }
 
-    logger.info('webhook', 'Gong call received', { callId: body.callId, title: body.title })
+    const { callId, title, duration, transcript, participants, recordingUrl } = validated.data
 
-    // Store in cache for async analysis (or queue for real processing)
-    const cacheKey = `ingest:gong:${body.callId}`
+    logger.info('webhook', 'Gong call received', { callId, title })
+
+    const cacheKey = `ingest:gong:${callId}`
     analysisCache.set(cacheKey, {
       source: 'gong',
       receivedAt: new Date().toISOString(),
-      ...body,
+      callId,
+      title,
+      duration,
+      transcript,
+      participants,
+      recordingUrl,
     }, 5 * 60 * 1000)
 
     return NextResponse.json(
       {
         received: true,
-        callId: body.callId,
+        callId,
         message: 'Call queued for analysis',
       },
       { status: 202 }

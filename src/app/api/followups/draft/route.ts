@@ -1,12 +1,24 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
 import { draftFollowUp } from '@/lib/agent/analyzer'
 import { logger } from '@/lib/logger'
+import { withValidation } from '@/lib/middleware/validate'
+import { rateLimit } from '@/lib/middleware/rateLimit'
+
+const DraftFollowUpSchema = z.object({
+  callId: z.string().min(1, 'Call ID is required'),
+  tone: z.enum(['professional', 'friendly', 'urgent']).optional(),
+})
+
+const checkLimit = rateLimit({ windowMs: 60_000, maxRequests: 30 })
 
 export async function POST(req: NextRequest) {
-  try {
-    const body = (await req.json()) as { callId: string; tone?: 'professional' | 'friendly' | 'urgent' }
+  const limited = await checkLimit(req)
+  if (limited) return limited
+
+  return withValidation(DraftFollowUpSchema, async (_req, body) => {
     const { callId, tone = 'professional' } = body
 
     const result = await draftFollowUp(callId, tone)
@@ -18,9 +30,5 @@ export async function POST(req: NextRequest) {
       tone,
       generated_at: new Date().toISOString(),
     })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error'
-    logger.error('api', 'Follow-up draft failed', { error: message })
-    return NextResponse.json({ error: message }, { status: 500 })
-  }
+  })(req)
 }

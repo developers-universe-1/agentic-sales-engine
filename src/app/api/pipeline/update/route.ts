@@ -1,12 +1,25 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
 import { mockDeals } from '@/lib/demo'
 import { logger } from '@/lib/logger'
+import { withValidation } from '@/lib/middleware/validate'
+import { rateLimit } from '@/lib/middleware/rateLimit'
+
+const UpdatePipelineSchema = z.object({
+  dealId: z.string().min(1, 'Deal ID is required'),
+  stage: z.enum(['Prospecting', 'Qualification', 'Proposal', 'Closed-Won', 'Closed-Lost']),
+  reason: z.string().optional(),
+})
+
+const checkLimit = rateLimit({ windowMs: 60_000, maxRequests: 30 })
 
 export async function POST(req: NextRequest) {
-  try {
-    const body = (await req.json()) as { dealId: string; stage: string; reason?: string }
+  const limited = await checkLimit(req)
+  if (limited) return limited
+
+  return withValidation(UpdatePipelineSchema, async (_req, body) => {
     const { dealId, stage, reason } = body
 
     const deal = mockDeals.find(d => d.id === dealId)
@@ -15,9 +28,8 @@ export async function POST(req: NextRequest) {
     }
 
     const previousStage = deal.stage
-    deal.stage = stage
+    deal.stage = stage.toLowerCase()
     deal.lastActivity = reason ? `Stage moved: ${reason}` : deal.lastActivity
-    const updatedAt = new Date().toISOString()
 
     logger.info('api', 'Pipeline updated', { dealId, previousStage, newStage: stage })
 
@@ -26,11 +38,7 @@ export async function POST(req: NextRequest) {
       previous_stage: previousStage,
       new_stage: stage,
       reason,
-      updated_at: updatedAt,
+      updated_at: new Date().toISOString(),
     })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error'
-    logger.error('api', 'Pipeline update failed', { error: message })
-    return NextResponse.json({ error: message }, { status: 500 })
-  }
+  })(req)
 }

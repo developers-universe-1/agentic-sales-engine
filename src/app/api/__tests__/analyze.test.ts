@@ -16,7 +16,7 @@ jest.mock('@/lib/logger', () => ({
 
 describe('GET /api/analyze', () => {
   it('returns dashboard snapshot', async () => {
-    const res = await GET({} as Request)
+    const res = await GET({} as unknown as import('next/server').NextRequest)
     const json = await res.json()
 
     expect(res.status).toBe(200)
@@ -29,7 +29,7 @@ describe('GET /api/analyze', () => {
 
 describe('GET /api/analyze/stream', () => {
   it('streams analysis progress events', async () => {
-    const res = await StreamGET({} as Request)
+    const res = await StreamGET({} as unknown as import('next/server').NextRequest)
 
     expect(res.status).toBe(200)
     expect(res.headers.get('content-type')).toBe('text/event-stream')

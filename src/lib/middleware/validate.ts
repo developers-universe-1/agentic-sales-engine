@@ -10,7 +10,7 @@ import { logger } from '@/lib/logger'
 // ------------------------------------------------------------------
 
 export class ValidationError extends Error {
-  constructor(public readonly flattened: z.typeToFlattenedError<unknown, string>) {
+  constructor(public readonly flattened: ReturnType<z.ZodError['flatten']>) {
     super('Validation failed')
     this.name = 'ValidationError'
   }
@@ -22,8 +22,9 @@ export async function validateBody<T>(schema: ZodSchema<T>, req: NextRequest): P
     return schema.parse(body)
   } catch (err) {
     if (err instanceof z.ZodError) {
-      logger.warn('api', 'Request validation failed', { errors: err.flatten() })
-      throw new ValidationError(err.flatten())
+      const flattened = err.flatten()
+      logger.warn('api', 'Request validation failed', { errors: flattened })
+      throw new ValidationError(flattened)
     }
     throw err
   }

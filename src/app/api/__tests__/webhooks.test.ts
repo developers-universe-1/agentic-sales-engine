@@ -5,6 +5,7 @@
 import { POST as gongPOST } from '../webhooks/gong/route'
 import { POST as fathomPOST } from '../webhooks/fathom/route'
 import { POST as firefliesPOST } from '../webhooks/fireflies/route'
+import type { NextRequest } from 'next/server'
 
 jest.mock('@/lib/logger', () => ({
   logger: {
@@ -24,7 +25,7 @@ describe('Webhook endpoints', () => {
       method: 'POST',
       headers,
       body: JSON.stringify(body),
-    })
+    }) as unknown as NextRequest
   }
 
   describe('Gong', () => {
