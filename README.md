@@ -5,6 +5,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=white)
 ![Jest](https://img.shields.io/badge/Jest-C21325?logo=jest&logoColor=white)
+![Tests](https://img.shields.io/badge/Tests-21%20passing-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 An MCP-native sales intelligence framework. Orchestrate CRM, call recorders, mailbox, and calendar through a unified Model Context Protocol layer — with a built-in observability dashboard.
@@ -172,6 +173,9 @@ Each integration is exposed as a typed MCP tool:
 | **Coaching** | Per-rep scorecards with weekly trend lines, team comparison bar charts |
 | **Benchmarks** | 8 industry segments with win rate/show rate comparison and radar chart |
 | **Loss Autopsy** | Objection clustering behind stalled deals with suggested counter-moves |
+| **Webhook Ingest** | Receives call recordings from Gong, Fathom, Fireflies with signature verification |
+| **Input Validation** | Zod validation on every API route with structured 400 errors |
+| **Rate Limiting** | Sliding-window rate limits with 429 + Retry-After headers |
 | **Integrations** | Connected status for Gong, Salesforce, HubSpot, Gmail, Slack with sync health |
 
 ## Testing
@@ -180,14 +184,37 @@ Each integration is exposed as a typed MCP tool:
 npm test
 ```
 
-Covers cache expiration, analysis engine streaming, error hierarchy, and loss autopsy clustering.
+**21 tests, 0 failures.** Covers:
+- Cache expiration, error hierarchy, loss autopsy clustering
+- LLM client with mock OpenAI server (no API key needed)
+- n8n client with mock n8n server (no n8n instance needed)
+- API routes: health, dashboard, streaming, webhooks
+- Input validation and rate limiting middleware
+
+### Verify Demo Mode (No Credentials)
+
+```bash
+npx ts-node --transpile-only scripts/verify-demo-mode.ts
+```
+
+Confirms the entire framework works without `OPENAI_API_KEY`, `N8N_WEBHOOK_URL`, or `DATABASE_URL`.
 
 ## Deployment
+
+### Docker (App Only)
 
 ```bash
 docker build -t mcp-sales-agent .
 docker run -p 3000:3000 mcp-sales-agent
 ```
+
+### Docker Compose (Full Stack)
+
+```bash
+make docker-up
+```
+
+Starts PostgreSQL + n8n + app. n8n UI at `http://localhost:5678` (admin / admin).
 
 ## Integrations
 
@@ -228,8 +255,10 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to add tools, run tests, and su
 
 - [ ] Full MCP stdio transport server implementation
 - [ ] MCP `tools/list`, `resources/list`, `prompts/list` capability endpoints
-- [x] Real LLM call wiring in `analyzer.ts` (GPT-4o with Zod validation, falls back to demo mode)
-- [x] Webhook ingest endpoints for Gong / Fathom / Fireflies
+- [x] Real LLM call wiring in `analyzer.ts` (GPT-4o with Zod validation, demo fallback)
+- [x] Webhook ingest endpoints for Gong / Fathom / Fireflies with signature verification
+- [x] Input validation + rate limiting on all API routes
+- [x] Database migration system (Prisma)
 - [ ] OAuth callback handlers for Salesforce, HubSpot, Gmail
 
 ## License

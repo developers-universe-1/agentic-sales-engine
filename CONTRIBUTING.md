@@ -11,6 +11,14 @@ npm install
 npx ts-node src/mcp/server.ts  # start the MCP server locally
 ```
 
+### Verify Everything Works (No API Keys)
+
+```bash
+npm test                           # 21 tests with mock servers
+npm run typecheck                  # TypeScript strict mode
+npx ts-node --transpile-only scripts/verify-demo-mode.ts  # End-to-end demo verification
+```
+
 ## How to Add a New MCP Tool
 
 The fastest way to get a PR merged: add a new tool.

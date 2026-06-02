@@ -14,6 +14,14 @@ Open `http://localhost:3000` → click **Open Dashboard**.
 
 No API keys. No database. No n8n. It just works.
 
+## Verify Demo Mode (No Credentials)
+
+```bash
+npx ts-node --transpile-only scripts/verify-demo-mode.ts
+```
+
+Confirms the entire framework works without any external services.
+
 ## 5-Minute Full Stack
 
 ```bash
@@ -25,7 +33,8 @@ npm install
 # 2. Start everything (PostgreSQL + n8n + app)
 make docker-up
 
-# 3. Seed database
+# 3. Run migrations & seed database
+npm run db:migrate
 npx prisma db seed
 
 # 4. Open dashboard
@@ -57,8 +66,9 @@ npx ts-node src/mcp/server.ts
 ```bash
 # 1. Edit src/mcp/server.ts — add TOOLS entry + handler
 # 2. Implement logic in src/lib/your-module.ts
-# 3. Add test in src/lib/__tests__/your-module.test.ts
-# 4. npm test && npm run typecheck
+# 3. Add Zod validation schema in src/lib/llm/schemas.ts (if LLM output)
+# 4. Add test in src/lib/__tests__/your-module.test.ts
+# 5. npm test && npm run typecheck
 ```
 
 See `CONTRIBUTING.md` for full guide.

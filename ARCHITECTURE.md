@@ -67,7 +67,23 @@
 
 ---
 
-## ADR-005: Repo-Centric Agent Skills
+## ADR-005: Input Validation + Rate Limiting
+
+**Status:** Accepted
+
+**Context:** API routes accepting untrusted input need validation and abuse protection. Without this, malformed payloads crash handlers and bad actors can overwhelm the service.
+
+**Decision:** All API routes use Zod validation middleware (`src/lib/middleware/validate.ts`) and sliding-window rate limiting (`src/lib/middleware/rateLimit.ts`). Webhooks skip rate limits (external services need reliability) but validate signatures.
+
+**Consequences:**
+- ✅ Consistent 400 responses with field-level error details
+- ✅ 429 responses with Retry-After headers
+- ✅ No route handler sees untrusted input
+- ❌ In-memory rate limiter doesn't work across multiple server instances (use Redis in production)
+
+---
+
+## ADR-006: Repo-Centric Agent Skills
 
 **Status:** Accepted
 

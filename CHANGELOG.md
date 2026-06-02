@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] — 2026-06-02
+
+### Added
+- **Input validation on all API routes** — Zod schemas with structured 400 errors
+- `src/lib/middleware/validate.ts` — Validation middleware with `withValidation()` helper
+- **Rate limiting** — Sliding-window in-memory rate limiter
+- `src/lib/middleware/rateLimit.ts` — Returns 429 with Retry-After header
+- **Database migrations** — `prisma/migrations/20250602000000_init/migration.sql`
+- `npm run db:migrate` and `npm run db:migrate:prod` scripts
+
+### Changed
+- All API routes now validate input and apply rate limits
+- Webhooks validate payloads with Zod + signature verification
+
 ## [1.2.0] — 2026-06-02
 
 ### Added
