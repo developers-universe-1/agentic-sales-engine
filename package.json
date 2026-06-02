@@ -1,7 +1,28 @@
 {
-  "name": "salesagent",
+  "name": "mcp-sales-agent",
   "version": "1.0.0",
-  "private": true,
+  "description": "MCP-native sales intelligence framework. Orchestrate CRM, call recorders, and email through a unified Model Context Protocol layer.",
+  "private": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "sales",
+    "ai-agent",
+    "crm",
+    "salesforce",
+    "hubspot",
+    "gong",
+    "nextjs",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/agentic-sales-engine.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
