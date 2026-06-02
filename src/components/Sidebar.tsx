@@ -35,7 +35,7 @@ export default function Sidebar() {
       <div className="p-6 border-b border-zinc-800">
         <Link href="/" className="flex items-center gap-2">
           <Activity className="w-6 h-6 text-brand-500" />
-          <span className="font-bold text-lg tracking-tight">MeetingAgent</span>
+          <span className="font-bold text-lg tracking-tight">MCP Sales Agent</span>
         </Link>
         <p className="text-xs text-zinc-500 mt-1">Open-source sales AI</p>
       </div>

@@ -3,17 +3,17 @@ import './globals.css'
 import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
-  title: 'MeetingAgent — AI-Powered Sales Observability',
+  title: 'MCP Sales Agent — MCP-Native Sales Intelligence',
   description: 'Open-source AI agent that reads sales calls, updates your pipeline, drafts follow-ups, and coaches your reps.',
   openGraph: {
-    title: 'MeetingAgent — AI-Powered Sales Observability',
-    description: 'Open-source AI agent that reads sales calls, updates your pipeline, drafts follow-ups, and coaches your reps.',
+    title: 'MCP Sales Agent — MCP-Native Sales Intelligence',
+    description: 'MCP-native sales intelligence framework. Orchestrate CRM, call recorders, and email through a unified Model Context Protocol layer.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MeetingAgent — AI-Powered Sales Observability',
-    description: 'Open-source AI agent that reads sales calls, updates your pipeline, drafts follow-ups, and coaches your reps.',
+    title: 'MCP Sales Agent — MCP-Native Sales Intelligence',
+    description: 'MCP-native sales intelligence framework. Orchestrate CRM, call recorders, and email through a unified Model Context Protocol layer.',
   },
 }
 

@@ -80,7 +80,7 @@ export default function Home() {
             </span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-br from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">
-            MeetingAgent
+            MCP Sales Agent
           </h1>
           <p className="text-xl text-zinc-400 max-w-2xl leading-relaxed mb-10">
             An AI agent for sales observability. Reads calls from Gong or Fathom,
@@ -258,7 +258,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Activity className="w-5 h-5 text-brand-500" />
-            <span className="font-semibold">MeetingAgent</span>
+            <span className="font-semibold">MCP Sales Agent</span>
           </div>
           <p className="text-sm text-zinc-500">
             Open-source sales AI — MIT License

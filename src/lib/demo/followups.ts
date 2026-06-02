@@ -50,7 +50,7 @@ export const mockFollowUps: FollowUp[] = [
     dealId: 'deal-5',
     company: 'Pulse Health',
     contact: 'Chris Morgan',
-    subject: 'Gong + MeetingAgent integration walkthrough',
+    subject: 'Gong + MCP Sales Agent integration walkthrough',
     body: "Hi Chris,\n\nYou asked how we fit alongside Gong. Here's the 3-minute version:\n\n1. Gong records and transcribes (you keep this)\n2. We read the transcript via API (no extra work for you)\n3. We update Salesforce, draft follow-ups, and brief your next meeting\n\nThink of it as the action layer that sits on top of Gong's capture layer. We don't replace — we complete the loop.\n\nI've attached a one-pager with the architecture diagram. Want to see it live?\n\nBest,\nAisha",
     status: 'sent',
     sentAt: '2026-05-23T11:00:00Z',
