@@ -36,12 +36,12 @@ export class HubSpotClient {
         return mockDeals.slice(0, limit).map(d => ({
           id: d.id,
           properties: {
-            dealname: d.name,
+            dealname: d.company,
             dealstage: d.stage,
             amount: d.value,
           },
           createdAt: d.createdAt,
-          updatedAt: d.updatedAt,
+          updatedAt: d.createdAt,
         })) as HubSpotDeal[]
       }
       throw err

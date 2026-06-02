@@ -1,0 +1,56 @@
+# MCP Sales Agent
+
+> Model Context Protocol (MCP) native sales intelligence framework.
+> Next.js 15 + TypeScript. Zero-config demo mode. n8n integration orchestrator. Hermes Agent cron skills.
+
+## What This Is
+
+An MCP server that exposes sales tools (call analysis, pipeline updates, follow-up drafting, benchmarks) as typed tools any MCP host can discover and invoke. Includes an observability dashboard.
+
+## For AI Agents
+
+- **Quick start:** `git clone <repo> && cd agentic-sales-engine && npm install && cp .env.example .env && npm run dev`
+- **MCP server:** `npx ts-node src/mcp/server.ts`
+- **Architecture:** `AGENTS.md`
+- **Agent skills:** `.claude/skills/mcp-sales-agent/SKILL.md` (Hermes/Claude/Codex), `.kimi/skills/mcp-sales-agent/SKILL.md` (Kimi), `.opencode/skills/mcp-sales-agent/SKILL.md` (Opencode)
+- **Cron jobs:** `.claude/skills/mcp-sales-agent/cron/*/SKILL.md`
+
+## Key Files
+
+| File | Purpose |
+|---|---|
+| `src/mcp/server.ts` | MCP stdio server — tool registry + handlers |
+| `src/lib/n8n/client.ts` | n8n webhook client — all integrations proxy through here |
+| `src/lib/agent/analyzer.ts` | Analysis engine with SSE streaming |
+| `src/lib/demo/` | Mock data for zero-config demo |
+| `n8n/workflows/` | Pre-built workflow JSON templates |
+| `prisma/schema.prisma` | PostgreSQL schema |
+| `src/app/api/` | REST + SSE endpoints |
+
+## Tools
+
+- `analyze_call` — sentiment, objections, talk ratios
+- `update_pipeline` — move deal stage
+- `draft_followup` — post-call email
+- `get_benchmarks` — industry comparison
+
+## Integration Ecosystem
+
+Salesforce, HubSpot, Gong, Slack, Gmail, Google Calendar, Outlook, CalendarFuel, Apollo, Pipedrive, Fathom, Fireflies.
+
+All managed through n8n workflows. Demo mode works without API keys or n8n.
+
+## Commands
+
+```bash
+npm install       # deps
+npm run dev       # dev server @ localhost:3000
+npm test          # jest
+npm run typecheck # tsc --noEmit
+npx ts-node src/mcp/server.ts  # MCP stdio
+make docker-up    # full stack (postgres + n8n + app)
+```
+
+## License
+
+MIT

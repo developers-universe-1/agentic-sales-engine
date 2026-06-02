@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const { callId, tone = 'professional' } = body
 
     const call = mockCalls.find(c => c.id === callId)
-    const followUp = mockFollowUps.find(f => f.callId === callId)
+    const followUp = mockFollowUps.find(f => f.dealId === callId)
 
     if (!call) {
       return NextResponse.json({ error: 'Call not found' }, { status: 404 })

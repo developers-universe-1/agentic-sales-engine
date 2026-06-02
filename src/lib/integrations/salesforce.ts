@@ -52,10 +52,10 @@ export class SalesforceClient {
         logger.debug('salesforce', 'n8n not configured — returning demo deals')
         return mockDeals.map(d => ({
           Id: d.id,
-          Name: d.name,
+          Name: d.company,
           StageName: d.stage,
           Amount: d.value,
-          CloseDate: d.expectedCloseDate,
+          CloseDate: d.createdAt,
           Probability: d.probability,
         })) as SalesforceOpportunity[]
       }

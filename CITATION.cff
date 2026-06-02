@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite it as below."
+type: software
+title: "MCP Sales Agent"
+abstract: "MCP-native sales intelligence framework with CRM integrations, call analysis, pipeline automation, and rep coaching."
+authors:
+  - family-names: "Reyes"
+    given-names: "Madelyn"
+repository-code: "https://github.com/developers-universe-1/agentic-sales-engine"
+license: MIT
+keywords:
+  - mcp
+  - model-context-protocol
+  - sales
+  - ai-agent
+  - crm
+  - n8n
+  - hermes-agent
+version: 1.1.0
+date-released: 2026-06-02

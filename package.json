@@ -15,7 +15,14 @@
     "hubspot",
     "gong",
     "nextjs",
-    "typescript"
+    "typescript",
+    "n8n",
+    "workflow-automation",
+    "hermes-agent",
+    "open-source",
+    "sales-intelligence",
+    "call-analysis",
+    "pipeline-automation"
   ],
   "author": "",
   "license": "MIT",

@@ -1,0 +1,3 @@
+# MCP Sales Agent
+
+See ../llms.txt for full context.

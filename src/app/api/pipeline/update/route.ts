@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     const previousStage = deal.stage
     deal.stage = stage
     deal.lastActivity = reason ? `Stage moved: ${reason}` : deal.lastActivity
-    deal.updatedAt = new Date().toISOString()
+    const updatedAt = new Date().toISOString()
 
     logger.info('api', 'Pipeline updated', { dealId, previousStage, newStage: stage })
 
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       previous_stage: previousStage,
       new_stage: stage,
       reason,
-      updated_at: deal.updatedAt,
+      updated_at: updatedAt,
     })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'

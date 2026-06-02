@@ -7,38 +7,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Call {
-  id        String   @id @default(cuid())
-  title     String
-  recordingUrl String?
-  duration  Int
-  sentiment String
-  stage     String
-  objection String?
-  nextSteps String?
-  dealValue Int?
-  repName   String
-  createdAt DateTime @default(now())
+model CallAnalysis {
+  id                String   @id @default(cuid())
+  title             String
+  duration          Int
+  sentiment         String
+  stage             String
+  objection         String?
+  objectionCategory String?
+  nextSteps         String?
+  dealValue         Int?
+  repName           String
+  transcript        String?
+  talkRatioRep      Float?
+  talkRatioProspect Float?
+  createdAt         DateTime @default(now())
 }
 
 model Deal {
-  id          String   @id @default(cuid())
-  company     String
-  contact     String
-  stage       String
-  value       Int
-  repName     String
+  id           String   @id @default(cuid())
+  company      String
+  contact      String
+  stage        String
+  value        Int
+  repName      String
   lastActivity String?
-  createdAt   DateTime @default(now())
+  probability  Int?
+  daysInStage  Int?
+  createdAt    DateTime @default(now())
 }
 
-model Rep {
-  id            String @id @default(cuid())
+model RepScorecard {
+  id            String   @id @default(cuid())
   name          String
   title         String
   callsHandled  Int
   avgTalkRatio  Float
   objectionRate Float
   closeRate     Float
+  avgDealSize   Int?
+  pipelineValue Int?
   score         Int
+  strengths     String[]
+  gaps          String[]
+  createdAt     DateTime @default(now())
+}
+
+model FollowUp {
+  id        String   @id @default(cuid())
+  dealId    String
+  company   String
+  contact   String
+  subject   String
+  body      String
+  status    String
+  sentAt    String?
+  replyAt   String?
+  repName   String
+  createdAt DateTime @default(now())
+}
+
+model PreCallBrief {
+  id        String   @id @default(cuid())
+  dealId    String
+  repName   String
+  summary   String
+  createdAt DateTime @default(now())
 }

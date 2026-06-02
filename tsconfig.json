@@ -35,6 +35,11 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "n8n",
+    "agentic-demand-engine",
+    "agentic-outreach-engine",
+    "agentic-revenue-intelligence",
+    "prisma/seed.ts"
   ]
 }
