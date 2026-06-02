@@ -1,0 +1,34 @@
+{
+  "name": "Salesforce Opportunity Update",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "salesforce-update"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "recordId": "={{ $json.body.opportunityId }}",
+        "fields": "={{ JSON.stringify($json.body.fields) }}"
+      },
+      "id": "salesforce",
+      "name": "Salesforce",
+      "type": "n8n-nodes-base.salesforce",
+      "typeVersion": 1,
+      "position": [450, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{"node": "Salesforce", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {"executionOrder": "v1"},
+  "staticData": null,
+  "tags": ["mcp", "salesforce", "crm"]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "HubSpot Deal Search",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "hubspot-search"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "filterGroups": {
+          "filters": [
+            {
+              "propertyName": "dealname",
+              "operator": "CONTAINS_TOKEN",
+              "value": "={{ $json.body.query }}"
+            }
+          ]
+        },
+        "limit": "={{ $json.body.limit ?? 10 }}"
+      },
+      "id": "hubspot",
+      "name": "HubSpot",
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 1,
+      "position": [450, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{"node": "HubSpot", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {"executionOrder": "v1"},
+  "staticData": null,
+  "tags": ["mcp", "hubspot", "crm"]
+}

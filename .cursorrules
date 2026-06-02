@@ -1,13 +1,21 @@
 # MCP Server — Cursor Rules
 
-This is an MCP-native server built with Next.js + TypeScript. When editing code, follow these patterns:
+This is an MCP-native server built with Next.js + TypeScript. All integrations are managed through n8n workflows; the app triggers n8n webhooks and falls back to demo mode when n8n is not configured.
 
 ## Architecture
 - `src/mcp/server.ts` — MCP stdio server entry point. Add new tools here first.
 - `src/lib/agent/` — AI agent logic (streaming, analysis, scoring)
-- `src/lib/integrations/` — CRM and data source clients (Salesforce, HubSpot, Gong, etc.)
+- `src/lib/n8n/` — n8n webhook client. All CRM calls go through here.
+- `src/lib/integrations/` — Thin wrappers around n8n client with demo fallback
 - `src/lib/demo/` — Rich mock data for zero-config demo mode
 - `src/app/api/` — REST + SSE endpoints that wrap MCP tools
+- `n8n/workflows/` — Pre-built workflow JSON templates
+
+## Adding a New Integration
+1. Create n8n workflow JSON in `n8n/workflows/<name>.json`
+2. Add typed wrapper in `src/lib/n8n/client.ts`
+3. Update integration wrapper in `src/lib/integrations/<name>.ts`
+4. Ensure demo fallback when `N8N_WEBHOOK_URL` is unset
 
 ## Adding a New Tool
 1. Add tool schema to `TOOLS` array in `src/mcp/server.ts`
@@ -24,8 +32,11 @@ This is an MCP-native server built with Next.js + TypeScript. When editing code,
 - Framer Motion for animations
 
 ## Demo Mode
-All tools should work without API keys. Use `src/lib/demo/` data when env vars are empty.
+All tools must work without API keys or n8n. Use `src/lib/demo/` data when env vars are empty.
 
 ## MCP Transport
 - Stdio: `npx ts-node src/mcp/server.ts`
+
+## Cron Jobs
+Scheduled jobs are handled by Hermes Agent, not the app. See `.claude/skills/mcp-sales-agent/cron/` for skill definitions.
 - SSE: `npm run dev` then hit `/api/mcp/sse` (add this endpoint if missing)

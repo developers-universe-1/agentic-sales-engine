@@ -1,0 +1,34 @@
+{
+  "name": "HubSpot Deal Update",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "hubspot-update"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dealId": "={{ $json.body.dealId }}",
+        "properties": "={{ $json.body.properties }}"
+      },
+      "id": "hubspot",
+      "name": "HubSpot",
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 1,
+      "position": [450, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{"node": "HubSpot", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {"executionOrder": "v1"},
+  "staticData": null,
+  "tags": ["mcp", "hubspot", "crm"]
+}

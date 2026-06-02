@@ -88,7 +88,7 @@ The framework ships with rich mock data so you can validate the architecture ins
 
 ```
 ┌─────────────────────────────────────────────┐
-│  MCP Client (Claude, Copilot, any MCP host) │
+│  MCP Client (Claude, Cursor, Copilot, Kimi) │
 │         ↓ stdio / SSE                       │
 ├─────────────────────────────────────────────┤
 │  Next.js 15 App Router                      │
@@ -99,12 +99,20 @@ The framework ships with rich mock data so you can validate the architecture ins
 │  └──────┬──────┘  └──────────────────────┘  │
 │         ↓                                   │
 │  ┌────────────────────────────────────────┐ │
-│  │  Integration Tool Servers              │ │
-│  │  ├─ salesforce.ts  (OAuth2 + SOQL)   │ │
-│  │  ├─ hubspot.ts     (Private app + Search)│
-│  │  ├─ gong.ts        (Calls + transcripts)│ │
-│  │  ├─ slack.ts       (Webhooks + Block Kit)│ │
-│  │  └─ gmail.ts       (OAuth2 draft/send) │ │
+│  │  n8n Workflow Orchestrator             │ │
+│  │  ├─ salesforce-query / update          │ │
+│  │  ├─ hubspot-search / update            │ │
+│  │  ├─ gong-fetch-calls / transcript      │ │
+│  │  ├─ slack-notify                       │ │
+│  │  ├─ gmail-send                         │ │
+│  │  └─ calendar-create                    │ │
+│  └────────────────────────────────────────┘ │
+│         ↓                                   │
+│  ┌────────────────────────────────────────┐ │
+│  │  Hermes Agent (Cron + Memory)          │ │
+│  │  ├─ Daily pre-call briefs @ 8 AM       │ │
+│  │  ├─ Weekly coaching reports @ Mon 9 AM │ │
+│  │  └─ Hourly pipeline sync               │ │
 │  └────────────────────────────────────────┘ │
 └─────────────────────────────────────────────┘
 ```
@@ -183,16 +191,26 @@ docker run -p 3000:3000 mcp-sales-agent
 
 ## Integrations
 
-Connect what you already use:
+Connect what you already use. All integrations are managed through **n8n workflows** — the app triggers n8n webhooks, and n8n handles OAuth, rate limits, retries, and API calls. No custom API clients to maintain.
 
 | Category | Tools |
 |---|---|
 | Call Recorders | **Gong**, **Fathom**, **Fireflies**, **Otter** |
-| CRM | **Salesforce**, **HubSpot** |
-| Mailbox | **Gmail** (OAuth), **Outlook** (OAuth) |
+| CRM | **Salesforce**, **HubSpot**, **Pipedrive**, **Zoho CRM** |
+| Mailbox | **Gmail** (OAuth), **Outlook** (OAuth), **SendGrid** |
 | Calendar | **Google Calendar**, **Outlook Calendar** |
-| Notifications | **Slack** (webhooks + bot) |
+| Notifications | **Slack** (webhooks + bot), **Microsoft Teams** |
+| LinkedIn / Outbound | **LinkedIn Sales Navigator**, **Apollo**, **CalendarFuel** |
+| Enrichment | **Clearbit**, **Apollo**, **ZoomInfo** |
 | LLM | **OpenAI GPT-4o / Claude 3.5 Sonnet** |
+
+### Recommended Complementary Tools
+
+| Tool | What It Does | Why It Pairs Well |
+|---|---|---|
+| **[CalendarFuel](https://app.calendarfuel.documindai.store/)** | Fractional GTM Engineering + AI sales agents (LinkedIn outreach, call analysis, meeting booking) | End-to-end outbound automation that complements MCP Sales Agent's pipeline intelligence and coaching layers. Same call-analysis → CRM-update → follow-up workflow, executed by dedicated AI agents. |
+| **n8n** | Workflow automation with 400+ integrations | Orchestrates all CRM, email, and calendar connections for this repo. Pre-built workflows included. |
+| **Hermes Agent** | Self-improving AI agent with cron + memory | Runs scheduled jobs (daily briefs, weekly coaching, hourly pipeline sync) against the MCP server. |
 
 ## Quick Validation
 

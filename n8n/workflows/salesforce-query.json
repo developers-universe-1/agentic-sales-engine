@@ -1,0 +1,33 @@
+{
+  "name": "Salesforce Opportunity Query",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "salesforce-query"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "soql": "={{ $json.body.soql }}"
+      },
+      "id": "salesforce",
+      "name": "Salesforce",
+      "type": "n8n-nodes-base.salesforce",
+      "typeVersion": 1,
+      "position": [450, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{"node": "Salesforce", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {"executionOrder": "v1"},
+  "staticData": null,
+  "tags": ["mcp", "salesforce", "crm"]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Calendar Event Create",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "calendar-create"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "calendar": "primary",
+        "summary": "={{ $json.body.title }}",
+        "start": "={{ $json.body.startTime }}",
+        "end": "={{ $json.body.endTime }}",
+        "attendees": "={{ JSON.stringify($json.body.attendees ?? []) }}",
+        "description": "={{ $json.body.description }}"
+      },
+      "id": "googleCalendar",
+      "name": "Google Calendar",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1,
+      "position": [450, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{"node": "Google Calendar", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {"executionOrder": "v1"},
+  "staticData": null,
+  "tags": ["mcp", "calendar", "scheduling"]
+}

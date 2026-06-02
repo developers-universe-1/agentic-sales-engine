@@ -121,8 +121,23 @@ docker run -p 3000:3000 mcp-sales-agent
 
 ## Roadmap (Next Contributions)
 
-- Full MCP stdio transport with `resources/list` and `prompts/list`
-- Real LLM wiring in `analyzer.ts` (currently simulated)
-- Webhook ingest endpoints for Gong / Fathom / Fireflies
-- OAuth callback handlers for Salesforce, HubSpot, Gmail
-- n8n custom node package (`n8n/` directory)
+- [ ] Full MCP stdio transport with `resources/list` and `prompts/list`
+- [ ] Real LLM wiring in `analyzer.ts` (currently simulated)
+- [ ] Webhook ingest endpoints for Gong / Fathom / Fireflies
+- [ ] OAuth callback handlers for Salesforce, HubSpot, Gmail
+- [ ] Hermes Agent auto-skill generation from repo commits
+- [ ] CalendarFuel native integration workflow
+
+## Top Integration Ecosystem
+
+Tools that work well alongside MCP Sales Agent:
+
+| Tool | Category | Why It Fits |
+|---|---|---|
+| **[CalendarFuel](https://app.calendarfuel.documindai.store/)** | Outbound AI Agent | Fractional GTM team + AI agents for LinkedIn, email, voice, call analysis, and meeting booking. Same pipeline → CRM → follow-up loop, run by dedicated agents. |
+| **n8n** | Workflow Automation | Orchestrates all CRM, email, calendar connections. Pre-built workflows included in `n8n/workflows/`. |
+| **Hermes Agent** | Autonomous AI Agent | Cron jobs, memory, and self-improving skills that interact with the MCP server. |
+| **Apollo** | Lead Enrichment | Warm lead database + sequencing that feeds into the pipeline. |
+| **Pipedrive** | CRM | Lightweight CRM alternative to Salesforce/HubSpot with great API. |
+| **Fathom** | Call Recorder | AI-notetaker that generates transcripts for `analyze_call`. |
+| **Fireflies** | Call Recorder | Meeting transcription with speaker diarization. |
