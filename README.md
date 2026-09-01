@@ -12,6 +12,15 @@ An MCP-native sales intelligence framework. Orchestrate CRM, call recorders, mai
 
 **Demo mode works without API keys.** Clone, `npm install`, `npm run dev`, and explore the full dashboard in under 60 seconds.
 
+## What this demonstrates
+
+Built as evidence of forward-deployed / customer-facing engineering work:
+
+- **Typed MCP tool design** — every sales capability (`analyze_call`, `update_pipeline`, `draft_followup`, `get_benchmarks`) is exposed as a Zod-schema'd MCP tool, discoverable and invocable by any MCP client (Claude, Cursor, Copilot, Kimi).
+- **CRM & webhook integration architecture** — type-safe Salesforce (OAuth2/SOQL), HubSpot, Gong, and Slack clients with rate-limit handling and typed error hierarchies, plus webhook ingest for call recorders with signature verification.
+- **LLM pipeline design** — structured output via Zod schemas, SSE streaming for multi-stage analysis, and a demo-mode fallback so the full pipeline runs without API keys.
+- **Production data modeling** — PostgreSQL via Prisma with migrations, an in-memory TTL cache, input validation, and sliding-window rate limiting on every API route.
+
 ## One-Line Install
 
 **Claude Desktop** — paste into `claude_desktop_config.json`:
@@ -260,6 +269,13 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to add tools, run tests, and su
 - [x] Input validation + rate limiting on all API routes
 - [x] Database migration system (Prisma)
 - [ ] OAuth callback handlers for Salesforce, HubSpot, Gmail
+
+## Related
+
+- [developers-universe-1](https://github.com/developers-universe-1) — FDE profile: case studies, post-mortems, production AI evals
+- [agentic-revenue-intelligence](https://github.com/developers-universe-1/agentic-revenue-intelligence)
+- [agentic-outreach-engine](https://github.com/developers-universe-1/agentic-outreach-engine)
+- [agentic-demand-engine](https://github.com/developers-universe-1/agentic-demand-engine)
 
 ## License
 
